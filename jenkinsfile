@@ -4,6 +4,14 @@ pipeline {
         pollSCM 'H/5 * * * *' // every 5 minutes this will check for changes in the repository and trigger the pipeline
     }
     stages{
+        stage('Printing variables'){
+            steps{
+                sh '''
+                echo ${BUILD_NUMBER}
+                echo ${BUILD_URL}
+                '''
+            }
+        }
         stage('Pull from github'){
             steps{
                 sh '''
