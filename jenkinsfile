@@ -29,6 +29,7 @@ pipeline {
         stage('Serving Image'){
             steps{
                 sh '''
+                docker stop $(docker ps -a -q)
                 docker run -d -p 3000:3000 maxim1706/node-app
                 '''
             }
@@ -36,7 +37,10 @@ pipeline {
         stage('Testing'){
             steps{
                 sh '''
+                #waiting 5 seconds for the server to start
+                sleep 5
                 curl -s http://localhost:3000
+
                 '''
             }
         }
