@@ -1,0 +1,44 @@
+pipeline {
+    agent any
+    triggers{
+        pollSCM 'H/5 * * * *' // every 5 minutes this will check for changes in the repository and trigger the pipeline
+    }
+    stages{
+        stage('Pull from github'){
+            steps{
+                '''sh
+                git pull
+                '''
+            }
+        }
+        stage('Checking files'){
+            steps{
+                '''sh
+                ls -l
+                '''
+            }
+        }
+
+        stage('Build Docker image'){
+            steps{
+                '''sh
+                docker build -t maxim1706/node-app .
+                '''
+            }
+        }
+        stage('Serving Image'){
+            steps{
+                '''sh
+                docker run -d -p 3000:3000 maxim1706/node-app
+                '''
+            }
+        }
+        stage('Testing'){
+            steps{
+                '''sh
+                curl -s http://localhost:3000
+                '''
+            }
+        }
+    }
+}
