@@ -7,7 +7,7 @@ pipeline {
         stage('Pull from github'){
             steps{
                 sh '''
-                git pull
+                git pull origin main
                 '''
             }
         }
